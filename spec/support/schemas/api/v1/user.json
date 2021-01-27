@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "file:/src/user.json#"
+    }
+  }
+}

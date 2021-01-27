@@ -1,0 +1,164 @@
+en:
+  errors:
+    unauthorized: you're not authenticated
+    forbidden: you're not authorized
+    not_found: record is not found
+    payment_required: payment required
+    conflict: there is a conflict
+    foreign_key_violation: Foreign Key Violation
+    unprocessable_entity: Unprocessable entity
+    at_least_one_parameter_exists?: you must pass at least one parameter
+    email?: '%{value} is invalid email'
+    phone_number?: '%{value} is invalid phone number'
+    valid_phone_number?: 'Phone number is invalid'
+    image?: 'Invalid image'
+    svg?: 'Invalid svg file'
+    png?: 'Invalid png file'
+    valid_sort?: 'sort param is invalid, allowed sorting fields: %{allowed_sort_fields}'
+    promotion_code?: 'Invalid promotion code format. Valid characters: 2346789BCDFGHJKMPQRTVWXY'
+    phone_conflict: >-
+      This phone number is already associated with an account %{email}.
+      Please log in using that email address or contact support for help.
+    verification_code_invalid: Verification code is invalid
+    has_visiting_info: Waiting room has already visting info
+    filter_state: You need to provide proper state
+    filter_kind: You need to provide proper kind
+    filter_role: You need to provide proper role
+    filter_folder: You need to provide proper folder
+    filter_privacy: You need to provide proper privacy
+    email_not_confirmed: Email not confirmed
+    email_already_confirmed: Email already confirmed
+    phone_number_not_verified: Phone number not verified
+    out_of_resend_limit: Resend limit is once per %{delay} seconds
+    out_of_icons_limit: Icons limit exceeded
+    has_baby_arrival: BabyArrival is already set for this waiting room.
+    has_birth_announcement: Birth announcement already exists
+    baby_already_arrived: Baby has already arrived
+    invalid_credentials: Invalid credentials
+    token_expired: Token already expired
+    token_obsoleted: Token is obsoleted
+    payment_not_received: Payment not received
+    receipt_not_found: Receipt not found
+    parent_slots_quota_exceeded: You have reached the maximum number of parents for one waiting room
+    advocate_slots_quota_exceeded: You have reached the maximum number of advocates for one waiting room
+    patient_slots_quota_exceeded: You have reached the maximum number of patients for one waiting room
+    room_participants_quota_exceeded: You have reached the maximum number of participants for one waiting room
+    purchase_is_already_fulfilled: Purchase is already fulfilled
+    changes_are_not_allowed: Changes are not allowed
+    already_guest: Already a guest
+    purchase_is_obsolete: Purchase is obsolete
+    invitation_already_exists: Invitation already exists
+    email_already_in_use: '%{email} email is already associated with another account.'
+    channel_name: Channel is not valid
+    promotion_code_is_deactivated: Invalid Promo Code. Contact support for more details.
+    promotion_code_is_exceeded: Invalid Promo Code. Contact support for more details.
+    promotion_code_is_expired: Invalid Promo Code. Contact support for more details.
+    promotion_code_is_already_fulfilled: Promotion code is already fulfilled
+    user_already_has_premium_plan: User already has premium plan
+    user_already_has_promo_plan: User already has promo plan
+    user_has_no_promo_plan: User has no promo plan
+    waiting_room_already_has_premium_plan: Waiting room already has premium plan
+    waiting_room_already_has_promo_plan: Waiting room already has promo plan
+    waiting_room_has_no_promo_plan: Waiting room has no promo plan
+    patient_already_exists: The patient already exists
+    trial_is_already_fulfilled: Trial is already fulfilled
+    invalid_product_id: Invalid product id
+    participant_is_creator: Sorry! The waiting room owner cannot be removed
+    participant_is_last_advocate: Sorry! The only Advocate cannot be removed
+    not_allowed_to_assign_user: You cannot assign this user
+    task_already_assigned: Task already assigned
+    task_is_not_editable: Task is not editable
+    role_filled: Role must be filled
+    days_count_filled: Days count must be filled
+    absolute_expire_date_filled: Absolute end date must be filled
+    admin:
+      phone_conflict: This phone number is already associated with an account %{email}.
+  time:
+    formats:
+      default: "%H:%M"
+  notifications:
+    visiting_info:
+      created: '%{waiting_room_name} posted visiting info! Visit the waiting room to check it out!'
+    waiting_room_update:
+      created: '%{waiting_room_name} posted an update! Visit the waiting room to check it out!'
+    baby_arrival:
+      created: 'BAM!!! %{waiting_room_name} has started labor! Visit the waiting room to follow progress!'
+      updated: 'Waiting room %{waiting_room_name} updated labor progress! Check it out now!'
+    bumpdate:
+      created: '%{waiting_room_name} shared a bumpdate! Visit the waiting room to check it out!'
+    birth_announcement:
+      created: '%{waiting_room_name} shared a birth announcement! Visit the waiting room to check it out!'
+  one_signal:
+    subscriptions:
+      expired: >-
+        Your OhanaLink Baby subscription has ended. We are sad to see you go!
+        To continue to share your updates please purchase a subscription.
+    notifications:
+      visiting_info:
+        created: '%{waiting_room_name} posted information in the care center! Visit the waiting room to check it out!'
+        updated: '%{waiting_room_name} updated information in the care center! Visit the waiting room to check it out!'
+      baby_arrival:
+        deleted: 'Oops... false alarm! Labor progress for waiting room %{waiting_room_name} has been reset'
+      bumpdate:
+        created: '%{waiting_room_name} shared a bumpdate! Visit the waiting room to check it out!'
+        updated: '%{waiting_room_name} updated a bumpdate! Visit the waiting room to check it out!'
+      birth_announcement:
+        created: '%{waiting_room_name} shared a birth announcement! Visit the waiting room to check it out!'
+      rooms_participant:
+        role_changed:
+          to_new_manager: 'You have been assigned as a %{role} in waiting room %{waiting_room_name}.'
+          to_other: '%{role} %{participant_name} has joined %{waiting_room_name} Ohanalink Waiting Room.'
+      invitation:
+        accepted:
+          to_guest: Welcome to waiting room %{waiting_room_name}!
+          to_managers: '%{guest_name} accepted your invitation to the waiting room %{waiting_room_name}.'
+      waiting_room:
+        invite_guests:
+          baby: >-
+            Welcome to your OhanaLink %{waiting_room_kind} waiting room!
+            Add your guests right away and start sharing bumpdates now!
+          omni: Welcome to OhanaLink %{waiting_room_kind}. Keep your “ohana” in the loop by adding guests now.
+      ocards_dispatch:
+        created: '%{sent_by_fullname} has sent you an o-card! Check well wishes in room %{waiting_room_name}'
+      stickers_dispatch:
+        created: '%{sent_by_fullname} has sent you a sticker! Check well wishes in room %{waiting_room_name}'
+      planner_task:
+        to_new_assignee: 'You have been assigned a new task: %{task_name}'
+        to_old_assignee: 'You have been removed from task: %{task_name}'
+  sns:
+    ocards_dispatch:
+      created: has sent an O-card
+  sms:
+    notifications:
+      baby_arrival:
+        created: 'OhanaLink Baby: %{waiting_room_name} has started labor! Visit the waiting room to follow progress!'
+        updated: 'Waiting room %{waiting_room_name} updated labor progress! Check it out now!'
+        arrived: 'Baby has arrived in %{waiting_room_name}! Send your O-Card congratulations now!'
+      waiting_room_update:
+        created: '%{waiting_room_name} posted an update! Visit the waiting room to check it out!'
+    waiting_rooms:
+      invitation: >-
+        %{fullname} invited you to OhanaLink %{waiting_room_kind} waiting room %{waiting_room_name}.
+        Click this link to join %{link}.
+  waiting_room_updates:
+    baby_arrival:
+      created: 'BAM!, waiting room has just started labor!'
+      updated: 'Waiting room updated labor progress!'
+      arrived: 'Baby is just arrived'
+    bumpdate:
+      created: 'New bumpdate is created'
+      updated: 'Bumpdate is updated'
+    birth_announcement:
+      created: 'Birth announcement is created'
+      updated: 'Birth announcement is updated'
+    visiting_info:
+      created: 'Care Center is created'
+      updated: 'Care Center is updated'
+    planner_task:
+      created: 'Task is created'
+      updated: 'Task is updated'
+  waiting_rooms:
+    kind:
+      baby: Baby
+      health: Health
+      kids_health: Health Kids

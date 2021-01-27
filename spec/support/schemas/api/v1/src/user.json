@@ -1,0 +1,23 @@
+{
+  "id": "file:/src/user.json#",
+  "type": "object",
+  "required": ["id", "type", "relationships"],
+  "properties": {
+    "id": { "type": "string" },
+    "type": { "const": "users" },
+    "attributes": {
+      "type": "object",
+      "additionalProperties": {
+        "createdAt": { "type": "string", "format": "date-time" },
+        "lastLoggedInAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "additionalProperties": {
+        "emailCredential": { "type": "object" },
+        "roomsParticipants": { "type": "object" }
+      }
+    }
+  }
+}
