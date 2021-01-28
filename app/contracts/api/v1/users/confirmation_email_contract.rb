@@ -6,6 +6,7 @@ module Api::V1
         params do
           required(:token).filled(:string)
           required(:original_token).filled(:string)
+          required(:user_id).filled(:integer)
           #required(:password).filled(:string)
         end
       end

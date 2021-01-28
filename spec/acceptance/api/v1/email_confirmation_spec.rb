@@ -14,19 +14,23 @@ RSpec.describe 'Users' do
 
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
+
+        
         #let(:email) { FFaker::Internet.email }
         #let(:password) { FFaker::Internet.password }
         let(:token) { "TOKEN" }
-        let(:original_token) { "TOKEN1" }
+        let(:original_token) { "TOKEN" }
 
-        #let(:authenticated_user) { create(:user, :deleted) }
-        #create(:email_credential, user: authenticated_user)
+        context 'try', :auth do 
+          let(:authenticated_user) { create(:user) }
+          before do
+            create(:email_credential, user: authenticated_user)
+          end
 
-        example 'Responds with 201 when params are valid', :aggregate_failures do
-          do_request
-
-          expect(status).to eq(201)
-        end        
+          example_request 'Responds with 200' do
+            expect(status).to eq(201)
+          end   
+        end     
         
       end
     end

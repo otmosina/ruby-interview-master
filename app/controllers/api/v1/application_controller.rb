@@ -18,7 +18,7 @@ module Api::V1
       head 401
     end
 
-    def current_user
+    def current_user      
       return @current_user if defined?(@current_user)
       return nil if found_token.nil?
 
