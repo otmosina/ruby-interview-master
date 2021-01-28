@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 RSpec.describe 'Users' do
   resource 'Current user endpoint' do
     route '/api/v1/user{?include}', 'Current user endpoint' do

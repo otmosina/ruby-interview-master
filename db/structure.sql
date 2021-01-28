@@ -102,7 +102,8 @@ CREATE TABLE public.users (
     id bigint NOT NULL,
     deleted_at timestamp with time zone,
     created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    updated_at timestamp with time zone NOT NULL,
+    token character varying
 );
 
 
@@ -186,6 +187,13 @@ CREATE INDEX index_email_credentials_on_user_id ON public.email_credentials USIN
 
 
 --
+-- Name: index_users_on_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_token ON public.users USING btree (token);
+
+
+--
 -- Name: email_credentials fk_rails_b700f9425a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -202,6 +210,7 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190426065925'),
 ('20190426065935'),
-('20190502072717');
+('20190502072717'),
+('20210127094744');
 
 
