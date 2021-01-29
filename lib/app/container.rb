@@ -7,3 +7,4 @@ module App
     import App::Operations
   end
 end
+#кажется это очень важный модуль - здесь экстендятся зависимости DRY

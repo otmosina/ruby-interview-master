@@ -62,7 +62,8 @@ CREATE TABLE public.email_credentials (
     deleted_at timestamp with time zone,
     user_id bigint NOT NULL,
     created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    updated_at timestamp with time zone NOT NULL,
+    confirmation_sent_at timestamp with time zone
 );
 
 
@@ -211,6 +212,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190426065925'),
 ('20190426065935'),
 ('20190502072717'),
-('20210127094744');
+('20210127094744'),
+('20210128123731');
 
 

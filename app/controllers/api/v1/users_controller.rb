@@ -24,5 +24,15 @@ module Api::V1
       end
     end
 
+    def send_confirmation_link
+      result = resolve_action.new(context: {current_user: current_user}).call(params.to_unsafe_h)
+
+      if result.success?
+        responds_with_resource(result.value!, status: 201)
+      else
+        handle_failure(result)
+      end
+    end
+
   end
 end
