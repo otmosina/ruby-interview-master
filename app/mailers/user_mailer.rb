@@ -4,8 +4,7 @@ class UserMailer < ApplicationMailer
     def confirmation_email
         to = params[:to]
         subject = "Confirmation email"
-        @confirmation_url = params[:confirmation_url]
-
+        @confirmation_url = params[:confirmation_url]      
         mail(to:to, subject:subject)
     end
 

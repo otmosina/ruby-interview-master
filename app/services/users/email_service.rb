@@ -16,7 +16,7 @@ module Users
             confirmation_url = params.fetch(:confirmation_url)
             to = params.fetch(:to)
             emailer = params.fetch(:emailer)
-            email_result = emailer.confirmation_email(to, confirmation_url)
+            email_result = emailer.with(to: to, confirmation_url: confirmation_url).confirmation_email.deliver_now#.deliver_later
             return email_result
             #if email_result
             #  Success.new(email_result)

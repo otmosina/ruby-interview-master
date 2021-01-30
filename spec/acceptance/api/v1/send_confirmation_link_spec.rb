@@ -44,6 +44,12 @@ RSpec.describe 'Users' do
             expect(authenticated_user.email_credential.reload.confirmation_sent_at).to_not be_nil
             #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
           end
+
+          example 'Deliveres count has change' do
+              expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          end
+          
+          
         end     
                
         
