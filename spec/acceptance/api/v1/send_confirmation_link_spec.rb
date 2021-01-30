@@ -29,8 +29,23 @@ RSpec.describe 'Users' do
 
           example_request 'Responds with 200' do
             expect(status).to eq(201)
-          end   
+          end
+
         end     
+       
+        context 'try', :auth do 
+          #let(:authenticated_user) { create(:user) }
+          before do
+            create(:email_credential, user: authenticated_user)
+          end
+
+          example 'Sent Time Has Changed' do
+            do_request
+            expect(authenticated_user.email_credential.reload.confirmation_sent_at).to_not be_nil
+            #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
+          end
+        end     
+               
         
       end
     end

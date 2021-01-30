@@ -6,6 +6,7 @@ FactoryBot.define do
     password { FFaker::Internet.password }
     password_confirmation { password }
     state { 'active' }
+    confirmation_sent_at { nil }
     user
 
     trait :pending do

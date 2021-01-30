@@ -10,7 +10,8 @@ class EmailCredential < ApplicationRecord
   end
 
   def mark_sent_confirmation!
-    self.update_attribute(:confirmation_sent_at, DateTime.now)
+    self.confirmation_sent_at = DateTime.now
+    self.save
   end
 
   def is_confirmation_link_has_expire?
