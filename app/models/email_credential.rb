@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 
 class EmailCredential < ApplicationRecord
+  include AASM
+
+  aasm column: :state do
+    state :pending,  initial: true
+    state :active
+    
+    event :confirm_credential! do
+      transitions from: :pennding,  to: :active
+    end
+  end
+
   has_secure_password
 
   belongs_to :user

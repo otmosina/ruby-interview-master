@@ -24,7 +24,8 @@ module Users
       private
 
       def confirm_token user
-        user.email_credential.change_state!
+        user.email_credential.confirm_credential!
+        #user.email_credential.change_state!
       end
   
       def build_user_params
