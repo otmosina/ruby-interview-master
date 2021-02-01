@@ -6,6 +6,8 @@ module Api::V1
       params do
         required(:email).filled(:string)
         required(:password).filled(:string)
+        #TODO(otmosia): check emailer context
+        #required(:emailer).value(ApplicationMailer)
       end
     end
   end

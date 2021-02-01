@@ -9,6 +9,7 @@ module Api::V1
 
     def initialize(context: {}, **args)
       @current_user = context.fetch(:current_user)
+      @emailer = context.fetch(:emailer)
 
       super(args)
     end
