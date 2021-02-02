@@ -14,8 +14,8 @@ module Api::V1
       end
     end
 
-    def resend_confirmation_mail
-
+    def resend_confirmation_link
+      send_confirmation_link
     end
 
     def confirmation_email
