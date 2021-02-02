@@ -10,6 +10,9 @@ module Api::V1
           required(:user_id).filled(:integer)
           #required(:password).filled(:string)
         end
+
+
+
       end
     end
   end

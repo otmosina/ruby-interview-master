@@ -10,6 +10,11 @@ module Api::V1
           required(:user_id).filled(:integer)
           #required(:password).filled(:string)
         end
+
+        #rule do
+        #  check confirmation ttl
+        #end
+        
       end
     end
   end

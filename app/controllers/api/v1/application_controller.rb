@@ -56,7 +56,7 @@ module Api::V1
       in Dry::Monads::Result::Failure(Hash => errors)
         responds_with_errors(errors, status: 422)
       in Dry::Monads::Result::Failure(ActiveRecord::RecordNotUnique => error)
-        head 409
+        head 409       
       end
     end
   end

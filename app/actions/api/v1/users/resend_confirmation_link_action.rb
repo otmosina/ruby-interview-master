@@ -6,6 +6,7 @@ module Api::V1
         def call(input)          
           params = yield deserialize(input)
           params[:user_id] = @current_user&.id
+          return Failure(errors: 'Too Much Requests') if @current_user.email_credential.is_confirmation_request_has_expire?
           params = yield validate(params)
           params[:emailer] = UserMailer
           create(params)

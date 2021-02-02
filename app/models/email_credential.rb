@@ -15,7 +15,10 @@ class EmailCredential < ApplicationRecord
   has_secure_password
 
   belongs_to :user
-  CONFIRMATION_TTL_HOURS = 48
+  CONFIRMATION_TTL_HOURS = 48.hours
+
+  CONFIRMATION_REQUEST_TTL = 5.minutes
+  
   def change_state!
     self.update_attribute(:state, 'active')
   end
@@ -26,6 +29,11 @@ class EmailCredential < ApplicationRecord
   end
 
   def is_confirmation_link_has_expire?
-    return Datetime.now.to_i - self.confirmation_sent_at.to_i > CONFIRMATION_TTL_HOURS.days.to_i
+    return DateTime.now.to_i - self.confirmation_sent_at.to_i > CONFIRMATION_TTL_HOURS.to_i
+  end
+
+  def is_confirmation_request_has_expire?
+    return false if self.confirmation_sent_at.nil?
+    return DateTime.now.to_i - self.confirmation_sent_at.to_i > CONFIRMATION_REQUEST_TTL.to_i
   end
 end

@@ -14,6 +14,9 @@ module Users
 
         user_id = params.fetch(:user_id)
         user = User.find(user_id)
+
+        #return Failure('Too Much Requests') if user.email_credential.is_confirmation_request_has_expire?
+
         to = user.email_credential.email
         title = "Confirmation Link"
         # MAGIC_LINK where should be placed?
