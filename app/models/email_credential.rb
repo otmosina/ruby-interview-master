@@ -8,7 +8,7 @@ class EmailCredential < ApplicationRecord
     state :active
     
     event :confirm_credential! do
-      transitions from: :pennding,  to: :active
+      transitions from: :pending,  to: :active
     end
   end
 

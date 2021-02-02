@@ -3,22 +3,25 @@
 module Users
     class ConfirmationEmailService
       def call(params)
-        #user_params = build_user_params
-        #user_params.merge!(build_email_credential_params(params))
-
-        
-        token = params.fetch(:token)
         user_id = params.fetch(:user_id)
         user = User.find_by_id(user_id)
-        original_token = user.token#params.fetch(:original_token)
-        #User.create(user_params)
-        if token == original_token#confirm
-            confirm_token(current_user)
-            return nil
-        else
-            puts "NOT MATCH TOKENNNNNNNN AAAAAAAA"
-            return nil#:error
-        end
+        confirm_token(user)
+        return nil
+        
+        #token = params.fetch(:token)
+        #user_id = params.fetch(:user_id)
+        #user = User.find_by_id(user_id)
+        #original_token = user.token#params.fetch(:original_token)
+        ##User.create(user_params)
+        ## вот это надо выносить в контракт
+        #if token == original_token#confirm
+        #    confirm_token(current_user)
+        #    return nil
+        #else
+        #    puts "NOT MATCH TOKENNNNNNNN AAAAAAAA"
+        #    return nil#:error
+        #end
+
       end
   
       private
