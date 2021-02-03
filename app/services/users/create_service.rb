@@ -7,12 +7,13 @@ module Users
       user_params.merge!(build_email_credential_params(params))
 
       user = User.create(user_params)
-      emailer = params.fetch(:emailer)
-      email_result = emailer.with(to: "otmosina@gmail.com", confirmation_url: "www.www.ru").confirmation_email.deliver_now#.deliver_later
-      if true#email_result is Success
-        user.email_credential.mark_sent_confirmation!
-      end
       user
+      
+      #emailer = params.fetch(:emailer)
+      #email_result = emailer.with(to: "otmosina@gmail.com", confirmation_url: "www.www.ru").confirmation_email.deliver_now#.deliver_later
+      #if true#email_result is Success
+      #  user.email_credential.mark_sent_confirmation!
+      #end
       #confirmation_url = params.fetch(:confirmation_url)
       #to = params.fetch(:to)
       #emailer = params.fetch(:emailer)
