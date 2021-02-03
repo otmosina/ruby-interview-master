@@ -7,7 +7,10 @@ module Api::V1
           required(:token).filled(:string)
           required(:original_token).filled(:string)
           required(:user_id).filled(:integer)
-          #required(:password).filled(:string)
+        end
+
+        rule(:token, :original_token) do
+          base.failure('Tokens not matched') if values[:token] != values[:original_token]        
         end
       end
     end

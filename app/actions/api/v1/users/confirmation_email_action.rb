@@ -7,9 +7,6 @@ module Api::V1
           params = yield deserialize(input)
           params[:user_id] = @current_user&.id
           params = yield validate(params)
-
-          return Failure(errors: 'Tokens not matched') if params[:token] != params[:original_token]        
-          
           create(params)
         end
   
