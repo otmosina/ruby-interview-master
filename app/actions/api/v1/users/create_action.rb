@@ -5,8 +5,9 @@ module Api::V1
     class CreateAction < ::Api::V1::BaseAction
       def call(input)
         params = yield deserialize(input)
+        params[:emailer] = @emailer.new
         params = yield validate(params)
-        params[:emailer] = @emailer
+        params[:emailer] = params[:emailer].class
         create(params)
       end
 
