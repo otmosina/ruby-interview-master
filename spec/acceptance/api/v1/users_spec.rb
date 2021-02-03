@@ -14,7 +14,7 @@ RSpec.describe 'Users' do
 
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
-        let(:email) { FFaker::Internet.email }
+        let(:email) { 1 }
         let(:password) { FFaker::Internet.password }
 
         example 'Responds with 201 when params are valid', :aggregate_failures do

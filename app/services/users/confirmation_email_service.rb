@@ -28,20 +28,11 @@ module Users
 
       def confirm_token user
         user.email_credential.confirm_credential!
-        #user.email_credential.change_state!
       end
   
       def build_user_params
         {}
       end
-  
-      #def build_email_credential_params(params)
-      #  email_credential_params = {
-      #    email: params.fetch(:email),
-      #    password: params.fetch(:password)
-      #  }
-      #  {email_credential_attributes: email_credential_params}
-      #end
     end
   end
   
