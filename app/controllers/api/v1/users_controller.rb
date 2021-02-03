@@ -14,10 +14,6 @@ module Api::V1
       end
     end
 
-    def resend_confirmation_link
-      send_confirmation_link
-    end
-
     def confirmation_email
       result = resolve_action.new(context: {current_user: current_user, emailer: UserMailer}).call(params.to_unsafe_h)
 

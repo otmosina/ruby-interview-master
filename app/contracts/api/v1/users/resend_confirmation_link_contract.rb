@@ -1,6 +1,6 @@
 
 # frozen_string_literal: true
-
+#TODO(otmosina): remove this coz all rules via SendAction
 module Api::V1
     module Users
       class ResendConfirmationLinkContract < ApplicationContract

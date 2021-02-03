@@ -63,7 +63,7 @@ RSpec.describe 'Users' do
               DateTime.now.day, 
               DateTime.now.hour, 
               DateTime.now.minute+EmailCredential::CONFIRMATION_REQUEST_TTL_MINUTES, 
-              DateTime.now.sec+1)
+              DateTime.now.sec+2)
             Timecop.travel(t)
             do_request
             expect(status).to eq(422)
