@@ -8,13 +8,10 @@ module Api::V1
           required(:token).filled(:string)
           required(:original_token).filled(:string)
           required(:user_id).filled(:integer)
-          #required(:password).filled(:string)
         end
-
-        #rule do
-        #  check confirmation ttl
-        #end
-        
+        rule(:user_id) do
+          base.failure('Too Much Requests') if User.find_by_id(value).email_credential.is_confirmation_request_has_expire?
+        end        
       end
     end
   end
