@@ -12,6 +12,7 @@ module Users
         # все кроме результирующего  шага второй ветвью будут возвращать None
         # последняя монада отдает  Success
 
+        emailer = params.fetch(:emailer)
         user_id = params.fetch(:user_id)
         user = User.find(user_id)
 
@@ -25,8 +26,8 @@ module Users
         
         params[:confirmation_url] = confirmation_url
         params[:to] = to 
-
-        result = EmailService.new.call(params) 
+        email_result = emailer.with(to: to, confirmation_url: confirmation_url).confirmation_email.deliver_now
+        #result = EmailService.new.call(params) 
         user.email_credential.mark_sent_confirmation!
 
         return nil

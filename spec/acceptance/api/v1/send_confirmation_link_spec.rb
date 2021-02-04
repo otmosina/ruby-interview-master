@@ -35,7 +35,10 @@ RSpec.describe 'Users' do
           end
 
           example 'Sent time has NOT changed(errors from Emailer)' do
-            allow_any_instance_of(Users::EmailService).to receive(:call).and_raise(Net::SMTPServerBusy)
+            #allow_any_instance_of(Users::EmailService).to receive(:call).and_raise(Net::SMTPServerBusy)
+            allow_any_instance_of(ActionMailer::MessageDelivery).to receive(:deliver_now).and_raise(Net::SMTPServerBusy)
+
+            #allow(UserMailer).to receive(:confirmation_email)
             do_request
             expect(authenticated_user.email_credential.reload.confirmation_sent_at).to be_nil 
           end          
