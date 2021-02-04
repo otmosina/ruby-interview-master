@@ -21,7 +21,7 @@ RSpec.describe 'Users' do
         let(:token) { "TOKEN" }
         let(:original_token) { "TOKEN" }
 
-        context 'try', :auth do 
+        context 'try match token', :auth do 
           let(:authenticated_user) { create(:user) }
           before do
             create(:email_credential, :pending, user: authenticated_user)
@@ -30,6 +30,10 @@ RSpec.describe 'Users' do
           example_request 'Responds with 200' do
             expect(status).to eq(201)
           end
+
+          example_request 'Change state of credential' do
+            expect(status).to eq(201)
+          end          
         end     
 
         context 'try not match token', :auth do 

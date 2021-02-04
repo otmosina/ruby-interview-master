@@ -36,7 +36,7 @@ RSpec.describe 'Users' do
         context 'try', :auth do 
           #let(:authenticated_user) { create(:user) }
           before do
-            create(:email_credential, user: authenticated_user)
+            create(:email_credential, :pending, user: authenticated_user)
           end
 
           example 'Sent Time Has Changed' do
@@ -49,9 +49,9 @@ RSpec.describe 'Users' do
               expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(1)
           end
 
-          example 'State Has Changed' do
+          example 'State Has Not Changed' do
             do_request
-            expect(authenticated_user.email_credential.reload.state).to eq('active')
+            expect(authenticated_user.email_credential.reload.state).to eq('pending')
             #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
           end          
           
