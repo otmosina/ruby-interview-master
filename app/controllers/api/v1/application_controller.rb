@@ -56,7 +56,9 @@ module Api::V1
       in Dry::Monads::Result::Failure(Hash => errors)
         responds_with_errors(errors, status: 422)
       in Dry::Monads::Result::Failure(ActiveRecord::RecordNotUnique => error)
-        head 409       
+        head 409      
+      in Dry::Monads::Result::Failure(Net::SMTPServerBusy => error)
+        responds_with_errors({errors: ["Email does not sent"]}, status: 455)             
       end
     end
   end

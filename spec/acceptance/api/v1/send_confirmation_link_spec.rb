@@ -22,6 +22,7 @@ RSpec.describe 'Users' do
         context 'when user authenticated', :auth do 
           let(:authenticated_user) { create(:user) }
           before do
+            #Users::EmailService.any_instance.stub(:call).and_return(Net::SMTPServerBusy)
             create(:email_credential, :pending, user: authenticated_user)
           end
 
@@ -29,27 +30,37 @@ RSpec.describe 'Users' do
             expect(status).to eq(201)
           end
           
-          example 'Sent Time Has Changed' do
+          example 'Sent time has changed' do
             do_request
-            expect(authenticated_user.email_credential.reload.confirmation_sent_at).to_not be_nil
-            #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
+            expect(authenticated_user.email_credential.reload.confirmation_sent_at).to_not be_nil 
           end
 
+          example 'Sent time has NOT changed(errors from Emailer)' do
+            #double("EmailService.new").to receive(:call).and_return(Net::SMTPServerBusy)
+            #dbl = double("EmailService.new")
+            #allow(dbl).to receive(:call)
+            #allow(dbl).to receive(:call) { Net::SMTPServerBusy }
+            #byebug
+            #allow(Users::EmailService.new).to receive(:new).receive(:call).and_return(Net::SMTPServerBusy)
+
+            #stb = allow(Users::EmailService).to receive(:new).and_call_original
+            #allow(stb).to receive(:call).with({}).and_return(Net::SMTPServerBusy)
+            
+            #byebug
+            allow_any_instance_of(Users::EmailService).to receive(:call).and_raise(Net::SMTPServerBusy)
+            do_request
+            expect(authenticated_user.email_credential.reload.confirmation_sent_at).to be_nil 
+          end          
 
           example 'Deliveres count has change' do
             expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(1)
           end
 
-          example 'State Has Not Changed' do
+          example 'State has not changed' do
             do_request
-            expect(authenticated_user.email_credential.reload.state).to eq('pending')
-            #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
+            expect(authenticated_user.email_credential.reload.state).to eq('pending')    
           end              
-
-
-        end     
-                  
-        
+        end      
       end
     end
   end

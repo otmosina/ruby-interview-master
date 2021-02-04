@@ -22,6 +22,10 @@ module Api::V1
       [ActiveRecord::InvalidForeignKey, ActiveRecord::RecordNotUnique]
     end
 
+    def net_smtp_common_errors
+      [Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError, Net::SMTPUnknownError]
+    end
+
     def deserialize(input)
       deserializer.call(input)
     end
