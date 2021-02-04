@@ -55,20 +55,27 @@ RSpec.describe 'Users' do
             #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
           end   
           
-          example 'Too Many Request' do
-            do_request
-            t = Time.local(
-              DateTime.now.year, 
-              DateTime.now.month, 
-              DateTime.now.day, 
-              DateTime.now.hour, 
-              DateTime.now.minute+EmailCredential::CONFIRMATION_REQUEST_TTL_MINUTES, 
-              DateTime.now.sec+2)
-            Timecop.travel(t)
-            do_request
-            expect(status).to eq(422)
-            #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
-          end             
+          context 'when too much requests' do
+            let(:future_time) {
+              Time.local(
+                DateTime.now.year, 
+                DateTime.now.month, 
+                DateTime.now.day, 
+                DateTime.now.hour, 
+                DateTime.now.minute+EmailCredential::CONFIRMATION_REQUEST_TTL_MINUTES, 
+                DateTime.now.sec+2)
+            }
+            example_request 'Responds with 422 when try to send cofirmation link too often' do
+              Timecop.travel(future_time)
+              do_request
+              expect(status).to eq(422)
+              expect(parsed_body['errors']).to contain_exactly(
+                '' => ['Too Much Requests']
+              )
+            end
+          end      
+          
+       
           
           
         end     

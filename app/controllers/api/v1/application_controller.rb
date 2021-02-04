@@ -52,8 +52,10 @@ module Api::V1
     def handle_failure(result)
       case result
       in Dry::Monads::Result::Failure(Dry::Validation::Result => validation)
+        #validation = validation&.errors&.messages&.first&.text
         responds_with_errors(validation, status: 422)
       in Dry::Monads::Result::Failure(Hash => errors)
+        
         responds_with_errors(errors, status: 422)
       in Dry::Monads::Result::Failure(ActiveRecord::RecordNotUnique => error)
         head 409      
