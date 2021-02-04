@@ -26,7 +26,6 @@ module Users
         params[:confirmation_url] = confirmation_url
         params[:to] = to 
 
-        #byebug
         result = EmailService.new.call(params) 
         user.email_credential.mark_sent_confirmation!
 
