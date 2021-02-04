@@ -34,6 +34,13 @@ RSpec.describe 'Users' do
                 have_type('emailCredentials')
               )
             end
+
+            example 'Responds with 401 after expire redresh token time' do
+              do_request
+              Timecop.travel(Time.now + (ENV.fetch('REFRESH_EXP_DAYS').to_i + 1).days)
+              do_request
+              expect(status).to eq(401)
+            end
           end
         end
       end
