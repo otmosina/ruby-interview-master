@@ -35,7 +35,7 @@ RSpec.describe 'Users' do
               )
             end
 
-            example 'Responds with 401 after expire redresh token time' do
+            example 'Responds with 401 after expire refresh token' do
               do_request
               Timecop.travel(Time.now + (ENV.fetch('REFRESH_EXP_DAYS').to_i + 1).days)
               do_request
