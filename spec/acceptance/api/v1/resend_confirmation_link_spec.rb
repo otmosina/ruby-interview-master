@@ -14,10 +14,6 @@ RSpec.describe 'Users' do
 
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
-
-        
-        #let(:email) { FFaker::Internet.email }
-        #let(:password) { FFaker::Internet.password }
         let(:token) { "TOKEN" }
         let(:original_token) { "TOKEN" }
 
@@ -30,19 +26,16 @@ RSpec.describe 'Users' do
           example_request 'Responds with 200' do
             expect(status).to eq(201)
           end
-
         end     
        
         context 'try', :auth do 
-          #let(:authenticated_user) { create(:user) }
           before do
             create(:email_credential, :pending, user: authenticated_user)
           end
 
           example 'Sent Time Has Changed' do
             do_request
-            expect(authenticated_user.email_credential.reload.confirmation_sent_at).to_not be_nil
-            #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
+            expect(authenticated_user.email_credential.reload.confirmation_sent_at).to_not be_nil   
           end
 
           example 'Deliveres count has change' do
@@ -51,36 +44,39 @@ RSpec.describe 'Users' do
 
           example 'State Has Changed' do
             do_request
-            expect(authenticated_user.email_credential.reload.state).to eq('pending')
-            #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
+            expect(authenticated_user.email_credential.reload.state).to eq('pending')    
           end   
           
           context 'when too much requests' do
-            let(:future_time) {
-              Time.local(
-                DateTime.now.year, 
-                DateTime.now.month, 
-                DateTime.now.day, 
-                DateTime.now.hour, 
-                DateTime.now.minute+EmailCredential::CONFIRMATION_REQUEST_TTL_MINUTES, 
-                DateTime.now.sec+2)
-            }
-            example_request 'Responds with 422 when try to send cofirmation link too often' do
-              Timecop.travel(future_time)
+            example 'Responds with 201 when try to send cofirmation link' do
+              do_request
+              expect(status).to eq(201)
+            end 
+
+            example 'Responds with 422 when try to send cofirmation link too often coz request still is not valid' do
+              do_request
+              Timecop.travel(Time.now + (EmailCredential::CONFIRMATION_REQUEST_TTL_MINUTES - 1).minutes)
+              do_request
+              expect(status).to eq(422)
+            end            
+
+            example 'Responds with 201 when try to send cofirmation link too often coz request is valid' do
+              do_request
+              Timecop.travel(Time.now + (EmailCredential::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
+              do_request
+              expect(status).to eq(201)
+            end
+            
+            example 'Responds with 422 when try to send cofirmation link too often' do
+              do_request
               do_request
               expect(status).to eq(422)
               expect(parsed_body['errors']).to contain_exactly(
                 '' => ['Too Much Requests']
               )
             end
-          end      
-          
-       
-          
-          
+          end   
         end     
-               
-        
       end
     end
   end
