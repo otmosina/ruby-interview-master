@@ -7,31 +7,23 @@ RSpec.describe 'Users' do
         parameter :include, example: 'emailCredential'
         parameter :type, scope: :data, required: true
 
-        with_options scope: %i[data attributes] do
-          parameter :token, required: true
-          parameter :original_token, required: true
-        end
-
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
-        let(:token) { "TOKEN" }
-        let(:original_token) { "TOKEN" }
 
-        context 'try', :auth do 
-          let(:authenticated_user) { create(:user) }
+        context 'When user not authenticated' do
+          example_request 'Respond with 401' do
+            expect(status).to eq(401)
+          end
+        end
+
+        context 'When user authenticated', :auth do 
           before do
-            create(:email_credential, user: authenticated_user)
+            create(:email_credential, :pending, user: authenticated_user)
           end
 
           example_request 'Responds with 200' do
             expect(status).to eq(201)
-          end
-        end     
-       
-        context 'try', :auth do 
-          before do
-            create(:email_credential, :pending, user: authenticated_user)
-          end
+          end          
 
           example 'Sent Time Has Changed' do
             do_request
