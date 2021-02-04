@@ -3,8 +3,9 @@
 module Api::V1
     module Users
       class ConfirmationEmailAction < ::Api::V1::BaseAction
-        def call(input)          
+        def call(input)
           params = yield deserialize(input)
+          params[:original_token] = @current_user&.token 
           params[:user_id] = @current_user&.id
           params = yield validate(params)
           create(params)

@@ -9,20 +9,15 @@ RSpec.describe 'Users' do
 
         with_options scope: %i[data attributes] do
           parameter :token, required: true
-          parameter :original_token, required: true
         end
 
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
-
-        
-        #let(:email) { FFaker::Internet.email }
-        #let(:password) { FFaker::Internet.password }
         let(:token) { "TOKEN" }
-        let(:original_token) { "TOKEN" }
 
         context 'try match token', :auth do 
           let(:authenticated_user) { create(:user) }
+          let(:token) { authenticated_user.token }
           before do
             create(:email_credential, :pending, user: authenticated_user)
           end
@@ -37,7 +32,6 @@ RSpec.describe 'Users' do
         end     
 
         context 'try not match token', :auth do 
-          let(:original_token) { "TOKEN2" }
           let(:authenticated_user) { create(:user) }
           before do
             create(:email_credential, :pending, user: authenticated_user)
