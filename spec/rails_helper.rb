@@ -30,8 +30,6 @@ require 'dry/container/stub'
 #
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
-Dir[Rails.root.join('app', 'services', '**', 'email_service.rb')].each { |f| require f }
-
 WebMock.disable_net_connect!
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
