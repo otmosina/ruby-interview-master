@@ -5,7 +5,7 @@ module Api::V1
     skip_before_action :authorize_access_request!, only: [:create]#, :confirmation_email]
 
     def create
-      result = resolve_action.new(context: {current_user: current_user, emailer: UserMailer}).call(params.to_unsafe_h)
+      result = resolve_action.new(context: {emailer: UserMailer}).call(params.to_unsafe_h)
 
       if result.success?
         responds_with_resource(result.value!, status: 201)
