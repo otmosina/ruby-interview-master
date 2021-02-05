@@ -7,6 +7,10 @@ RSpec.describe 'Users' do
         parameter :include, example: 'emailCredential'
         parameter :type, scope: :data, required: true
 
+        #with_options scope: %i[data attributes] do
+        #  parameter :email, required: true
+        #end
+
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
 
