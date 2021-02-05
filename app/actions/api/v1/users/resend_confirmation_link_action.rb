@@ -15,10 +15,8 @@ module Api::V1
         private
   
         def create(input)
-          # а вот тут мы описываем возможные ошибки от  каждой монады внутри сервиса
           Try(active_record_common_errors+net_smtp_common_errors) do
             ::Users::SendConfirmationLinkService.new.call(input)
-            # по идее в сервис можно передать клиент для оправки письма который работает с параметрами to message и так далее
           end.to_result
         end
       end

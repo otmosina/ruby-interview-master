@@ -15,9 +15,6 @@ module Api::V1
     end
 
     def confirm_email
-      #just confirm fuckig email 
-      #answer ok
-      #do not login and something else
       result = resolve_action.new().call(params.to_unsafe_h)
 
       if result.success?
