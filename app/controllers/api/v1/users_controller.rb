@@ -14,7 +14,7 @@ module Api::V1
       end
     end
 
-    def confirmation_email
+    def confirm_email
       result = resolve_action.new(context: {current_user: current_user}).call(params.to_unsafe_h)
 
       if result.success?

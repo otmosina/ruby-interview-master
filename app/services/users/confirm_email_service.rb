@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Users
-    class ConfirmationEmailService
+    class ConfirmEmailService
       def call(params)
         user_id = params.fetch(:user_id)
         user = User.find_by_id(user_id)

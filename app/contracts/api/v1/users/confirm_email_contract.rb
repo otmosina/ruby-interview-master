@@ -2,7 +2,7 @@
 
 module Api::V1
     module Users
-      class ConfirmationEmailContract < ApplicationContract
+      class ConfirmEmailContract < ApplicationContract
         params do
           required(:token).filled(:string)
           required(:original_token).filled(:string)
