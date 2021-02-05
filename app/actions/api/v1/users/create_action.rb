@@ -16,7 +16,8 @@ module Api::V1
       def create(input)
         Try(active_record_common_errors+net_smtp_common_errors) do
           user = ::Users::CreateService.new.call(input)
-          ::Users::SendConfirmationLinkService.new.call(input.merge!({user_id: user.id}))
+          input.merge!({user_id: user.id})
+          ::Users::SendConfirmationLinkService.new.call(input)
           user
         end.to_result
       end

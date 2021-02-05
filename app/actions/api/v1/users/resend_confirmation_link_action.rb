@@ -6,8 +6,9 @@ module Api::V1
         def call(input)          
           params = yield deserialize(input)
           params[:user_id] = @current_user&.id
+          params[:emailer] = @emailer.new
           params = yield validate(params)
-          params[:emailer] = UserMailer
+          params[:emailer] = params[:emailer].class
           create(params)
         end
   
