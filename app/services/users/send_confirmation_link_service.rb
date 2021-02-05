@@ -15,8 +15,7 @@ module Users
         email = params.fetch(:email)
 
         emailer = params.fetch(:emailer)
-        user_id = params.fetch(:user_id)
-        user = User.find(user_id)
+        user = EmailCredential.find_by_email(email).user
 
         #return Failure('Too Much Requests') if user.email_credential.is_confirmation_request_has_expire?
 

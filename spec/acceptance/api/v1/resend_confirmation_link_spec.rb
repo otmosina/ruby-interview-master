@@ -15,23 +15,21 @@ RSpec.describe 'Users' do
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
 
-        context 'When user not authenticated' do
-          example_request 'Respond with 401' do
-            expect(status).to eq(401)
+        context 'When no email credential -> no connfirmation requests before' do
+          example_request 'Respond with 422' do
+            expect(status).to eq(422)
           end
         end
 
         context 'When user authenticated', :auth do 
-          before do
-            create(:email_credential, :pending, user: authenticated_user)
-          end
+          let(:email_credential) { create(:email_credential, :pending, user: authenticated_user) }
+          let(:email) { email_credential.email }
 
           example_request 'Responds with 201 request is valid' do
             expect(status).to eq(201)
           end          
 
           example_request 'Send time attribute has changed' do
-            #expect(authenticated_user.email_credential.reload.confirmation_sent_at).to_not be_nil
             expect(ConfirmationRequest.last.confirmation_sent_at).to_not be_nil
           end
 

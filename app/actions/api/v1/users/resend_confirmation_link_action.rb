@@ -5,7 +5,6 @@ module Api::V1
       class ResendConfirmationLinkAction < ::Api::V1::BaseAction
         def call(input)          
           params = yield deserialize(input)
-          params[:user_id] = @current_user&.id
           params[:emailer] = @emailer.new
           params = yield validate(params)
           params[:emailer] = params[:emailer].class
