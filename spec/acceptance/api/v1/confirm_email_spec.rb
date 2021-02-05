@@ -47,6 +47,14 @@ RSpec.describe 'Users' do
               '' => ['Tokens not matched']
             )            
           end
+
+          example_request 'Change state of credential to active' do
+            expect(authenticated_user.email_credential.reload.pending?).to eq(true)
+          end 
+          
+          example_request 'Set confirmation at in entity' do
+            expect(authenticated_user.email_credential.reload.confirmed_at).to be_nil
+          end            
         end             
         
       end
