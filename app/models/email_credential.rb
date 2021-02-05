@@ -18,10 +18,7 @@ class EmailCredential < ApplicationRecord
   CONFIRMATION_TTL_HOURS = 48.hours
 
   CONFIRMATION_REQUEST_TTL_MINUTES = 5
-  
-  def change_state!
-    self.update_attribute(:state, 'active')
-  end
+
 
   def mark_sent_confirmation!
     self.confirmation_sent_at = DateTime.now
