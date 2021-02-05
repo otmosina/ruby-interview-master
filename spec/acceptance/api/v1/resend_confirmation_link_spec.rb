@@ -7,10 +7,11 @@ RSpec.describe 'Users' do
         parameter :include, example: 'emailCredential'
         parameter :type, scope: :data, required: true
 
-        #with_options scope: %i[data attributes] do
-        #  parameter :email, required: true
-        #end
+        with_options scope: %i[data attributes] do
+          parameter :email, required: true
+        end
 
+        let(:email) { "testemail@example.com" } #{ FFaker::Internet.email }
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
 
@@ -30,7 +31,8 @@ RSpec.describe 'Users' do
           end          
 
           example_request 'Send time attribute has changed' do
-            expect(authenticated_user.email_credential.reload.confirmation_sent_at).to_not be_nil   
+            #expect(authenticated_user.email_credential.reload.confirmation_sent_at).to_not be_nil
+            expect(ConfirmationRequest.last.confirmation_sent_at).to_not be_nil
           end
 
           example 'Mail deliveres count has change' do
@@ -44,6 +46,7 @@ RSpec.describe 'Users' do
           example 'Responds with 422 when try to send cofirmation link 2 times in a row' do
             do_request
             do_request
+            #byebug
             expect(status).to eq(422)
             expect(parsed_body['errors']).to contain_exactly(
               '' => ['Too Much Requests']
@@ -52,14 +55,14 @@ RSpec.describe 'Users' do
           
           example 'Responds with 422 when try to send cofirmation link 2 times in short time period' do
             do_request
-            Timecop.travel(Time.now + (EmailCredential::CONFIRMATION_REQUEST_TTL_MINUTES - 1).minutes)
+            Timecop.travel(Time.now + (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES - 1).minutes)
             do_request
             expect(status).to eq(422)
           end
 
           example 'Responds with 422 when try to send cofirmation link 2 times in valid time period' do
             do_request
-            Timecop.travel(Time.now + (EmailCredential::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
+            Timecop.travel(Time.now + (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
             do_request
             expect(status).to eq(201)
           end          

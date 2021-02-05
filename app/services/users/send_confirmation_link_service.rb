@@ -12,23 +12,23 @@ module Users
         # все кроме результирующего  шага второй ветвью будут возвращать None
         # последняя монада отдает  Success
 
+        email = params.fetch(:email)
+
         emailer = params.fetch(:emailer)
         user_id = params.fetch(:user_id)
         user = User.find(user_id)
 
         #return Failure('Too Much Requests') if user.email_credential.is_confirmation_request_has_expire?
 
-        to = user.email_credential.email
         title = "Confirmation Link"
         # MAGIC_LINK where should be placed?
         magic_link = "https://example.com?token=%s"
         confirmation_url =  magic_link % user.token
-        
-        params[:confirmation_url] = confirmation_url
-        params[:to] = to 
-        email_result = emailer.with(to: to, confirmation_url: confirmation_url).confirmation_email.deliver_now
-        #result = EmailService.new.call(params) 
-        user.email_credential.mark_sent_confirmation!
+
+        email_result = emailer.with(to: email, confirmation_url: confirmation_url).confirmation_email.deliver_now
+        #result = EmailService.new.call(params)
+        ConfirmationRequest.create(email: email, confirmation_sent_at: DateTime.now)
+        #user.email_credential.mark_sent_confirmation!
 
         return nil
       end
