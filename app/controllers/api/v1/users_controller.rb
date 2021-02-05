@@ -15,7 +15,10 @@ module Api::V1
     end
 
     def confirm_email
-      result = resolve_action.new(context: {current_user: current_user}).call(params.to_unsafe_h)
+      #just confirm fuckig email 
+      #answer ok
+      #do not login and something else
+      result = resolve_action.new().call(params.to_unsafe_h)
 
       if result.success?
         responds_with_resource(result.value!, status: 201)
@@ -25,6 +28,7 @@ module Api::V1
     end
 
     def resend_confirmation_link
+      #TODO(otmosina): implement incomig attribute email...
       result = resolve_action.new(context: {current_user: current_user, emailer: UserMailer}).call(params.to_unsafe_h)
 
       if result.success?

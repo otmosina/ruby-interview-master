@@ -5,8 +5,6 @@ module Api::V1
       class ConfirmEmailAction < ::Api::V1::BaseAction
         def call(input)
           params = yield deserialize(input)
-          params[:original_token] = @current_user&.token 
-          params[:user_id] = @current_user&.id
           params = yield validate(params)
           create(params)
         end
@@ -16,7 +14,6 @@ module Api::V1
         def create(input)
           Try(active_record_common_errors) do
             ::Users::ConfirmEmailService.new.call(input)
-            #Session.login do!
           end.to_result
         end
       end

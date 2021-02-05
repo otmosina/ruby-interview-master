@@ -5,12 +5,10 @@ module Api::V1
       class ConfirmEmailContract < ApplicationContract
         params do
           required(:token).filled(:string)
-          required(:original_token).filled(:string)
-          required(:user_id).filled(:integer)
         end
 
-        rule(:token, :original_token) do
-          base.failure('Tokens not matched') if values[:token] != values[:original_token]        
+        rule(:token) do
+          base.failure('Tokens not matched') unless User.find_by_token(values[:token])       
         end
       end
     end

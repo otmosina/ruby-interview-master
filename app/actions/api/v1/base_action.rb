@@ -19,7 +19,7 @@ module Api::V1
     attr_reader :current_user
 
     def active_record_common_errors
-      [ActiveRecord::InvalidForeignKey, ActiveRecord::RecordNotUnique]
+      [ActiveRecord::InvalidForeignKey, ActiveRecord::RecordNotUnique, ActiveRecord::RecordNotFound]
     end
 
     def net_smtp_common_errors
