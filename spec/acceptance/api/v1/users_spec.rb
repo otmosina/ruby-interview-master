@@ -34,7 +34,14 @@ RSpec.describe 'Users' do
         
         example 'Deliveres count has change' do
           expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(1)
-        end 
+        end
+
+        example 'Sent time has NOT changed(errors from Emailer)' do
+          allow_any_instance_of(ActionMailer::MessageDelivery).to receive(:deliver_now).and_raise(Net::SMTPServerBusy)
+          do_request
+          expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(0)
+          #expect(authenticated_user.email_credential.reload.confirmation_sent_at).to be_nil 
+        end         
 
         context 'when params are invalid' do
           let(:password) { nil }
@@ -45,6 +52,9 @@ RSpec.describe 'Users' do
               'password' => ['must be filled']
             )
           end
+          example 'Deliveres count has not changed' do
+            expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(0)
+          end        
         end
 
         context 'when email credential already exists' do

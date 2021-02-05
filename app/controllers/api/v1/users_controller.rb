@@ -15,7 +15,7 @@ module Api::V1
     end
 
     def confirmation_email
-      result = resolve_action.new(context: {current_user: current_user, emailer: UserMailer}).call(params.to_unsafe_h)
+      result = resolve_action.new(context: {current_user: current_user}).call(params.to_unsafe_h)
 
       if result.success?
         responds_with_resource(result.value!, status: 201)
@@ -24,7 +24,7 @@ module Api::V1
       end
     end
 
-    def send_confirmation_link
+    def resend_confirmation_link
       result = resolve_action.new(context: {current_user: current_user, emailer: UserMailer}).call(params.to_unsafe_h)
 
       if result.success?
@@ -32,7 +32,7 @@ module Api::V1
       else
         handle_failure(result)
       end
-    end
+    end    
 
   end
 end
