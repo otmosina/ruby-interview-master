@@ -13,7 +13,7 @@ RSpec.describe 'Users' do
 
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
-        let(:token) { "TOKEN" }
+        let(:token) { FFaker::String.rand }
 
         context 'try match token', :auth do 
           let(:authenticated_user) { create(:user) }
