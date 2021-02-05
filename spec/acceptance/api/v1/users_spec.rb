@@ -26,22 +26,22 @@ RSpec.describe 'Users' do
           expect(status).to eq(201)
         end
 
-        example 'Sent Time Has Changed' do
-          do_request
+        example_request 'Set send time of confirmation mail' do
           expect(User.last.email_credential.reload.confirmation_sent_at).to_not be_nil
-          #expect { do_request }.to( change {authenticated_user.email_credential.confirmation_sent_at}.from(nil).to(DateTime) )     
         end  
         
         example 'Deliveres count has change' do
           expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
 
-        example 'Sent time has NOT changed(errors from Emailer)' do
-          allow_any_instance_of(ActionMailer::MessageDelivery).to receive(:deliver_now).and_raise(Net::SMTPServerBusy)
-          do_request
-          expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(0)
-          #expect(authenticated_user.email_credential.reload.confirmation_sent_at).to be_nil 
-        end         
+        context 'when errors in sending mail' do
+          example 'Sent time & sent_at have not changed' do
+            allow_any_instance_of(ActionMailer::MessageDelivery).to receive(:deliver_now).and_raise(Net::SMTPServerBusy)
+            do_request
+            expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(0)
+            expect(User.last.email_credential.reload.confirmation_sent_at).to be_nil 
+          end  
+        end       
 
         context 'when params are invalid' do
           let(:password) { nil }
