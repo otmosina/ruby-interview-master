@@ -27,7 +27,7 @@ RSpec.describe 'Users' do
           end
 
           example_request 'Change state of credential' do
-            expect(status).to eq(201)
+            expect(authenticated_user.email_credential.reload.active?).to eq(true)
           end          
         end     
 
@@ -39,6 +39,9 @@ RSpec.describe 'Users' do
 
           example_request 'Responds with 4**' do
             expect(status).to eq(422)
+            expect(parsed_body['errors']).to contain_exactly(
+              '' => ['Tokens not matched']
+            )            
           end
         end             
         
