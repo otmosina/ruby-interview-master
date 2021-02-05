@@ -22,4 +22,8 @@ class ConfirmationRequest < ApplicationRecord
     return true if self.confirmation_sent_at.nil?
     return DateTime.now.to_i - self.confirmation_sent_at.to_i > CONFIRMATION_REQUEST_TTL_MINUTES.minutes.to_i
   end
+
+  def self.last_by_email value
+    ConfirmationRequest.where(email: value).order('created_at DESC').first
+  end
 end
