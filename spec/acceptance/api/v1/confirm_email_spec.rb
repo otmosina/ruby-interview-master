@@ -15,7 +15,7 @@ RSpec.describe 'Users' do
         let(:type) { 'users' }
         let(:token) { FFaker::String.rand }
 
-        context 'try match token', :auth do 
+        context 'when confirmatio token is correct', :auth do 
           let(:authenticated_user) { create(:user) }
           let(:token) { authenticated_user.token }
           before do
@@ -26,12 +26,16 @@ RSpec.describe 'Users' do
             expect(status).to eq(201)
           end
 
-          example_request 'Change state of credential' do
+          example_request 'Change state of credential to active' do
             expect(authenticated_user.email_credential.reload.active?).to eq(true)
-          end          
+          end 
+          
+          example_request 'Set confirmation at in entity' do
+            expect(authenticated_user.email_credential.reload.confirmed_at).to_not be_nil
+          end           
         end     
 
-        context 'try not match token', :auth do 
+        context 'when confirmatio token is incorrect', :auth do 
           let(:authenticated_user) { create(:user) }
           before do
             create(:email_credential, :pending, user: authenticated_user)
