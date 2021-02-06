@@ -20,6 +20,7 @@ RSpec.describe 'Users' do
           let(:token) { authenticated_user.token }
           before do
             create(:email_credential, :pending, user: authenticated_user)
+            create(:confirmation_request, email: authenticated_user.email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
           end
 
           example_request 'Responds with 200' do
@@ -35,10 +36,11 @@ RSpec.describe 'Users' do
           end           
         end     
 
-        context 'when confirmatio token is incorrect', :auth do 
+        context 'when confirmation token is incorrect', :auth do 
           let(:authenticated_user) { create(:user) }
           before do
             create(:email_credential, :pending, user: authenticated_user)
+            create(:confirmation_request, email: authenticated_user.email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
           end
 
           example_request 'Responds with 4**' do
