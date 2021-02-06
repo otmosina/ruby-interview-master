@@ -2,7 +2,7 @@
 
 module Api::V1
   class UsersController < ::Api::V1::ApplicationController
-    skip_before_action :authorize_access_request!, only: [:create, :resend_confirmation_link]
+    skip_before_action :authorize_access_request!, only: [:create, :resend_confirmation_link, :confirm_email]
 
     def create
       result = resolve_action.new(context: {emailer: UserMailer}).call(params.to_unsafe_h)

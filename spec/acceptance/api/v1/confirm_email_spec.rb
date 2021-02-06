@@ -57,7 +57,25 @@ RSpec.describe 'Users' do
           example_request 'Set confirmation at in entity' do
             expect(authenticated_user.email_credential.reload.confirmed_at).to be_nil
           end            
-        end             
+        end
+        
+        context 'when confirmation link has expire is incorrect', :auth do 
+          let(:authenticated_user) { create(:user) }
+          let(:token) { authenticated_user.token }
+          before do
+            create(:email_credential, :pending, user: authenticated_user)
+            create(:confirmation_request, email: authenticated_user.email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
+          end
+
+          example 'Responds with 4**' do
+            Timecop.travel(Time.now + (ConfirmationRequest::CONFIRMATION_TTL_HOURS + 1).hours)
+            do_request
+            expect(parsed_body['errors']).to contain_exactly(
+              '' => ['Confirmation link already expire']
+            )             
+            expect(status).to eq(422)
+          end         
+        end
         
       end
     end
