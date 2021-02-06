@@ -9,7 +9,7 @@ module Api::V1
         end
 
         rule(:email) do
-          unless EmailCredential.find_by_email(value).present?
+          unless ConfirmationRequest.last_by_email(value).present?
             base.failure('Did not send any confirmation before')
           end
           if ConfirmationRequest.last_by_email(value)&.is_confirmation_request_has_expire?

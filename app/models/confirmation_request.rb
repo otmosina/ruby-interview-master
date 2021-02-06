@@ -10,7 +10,7 @@ class ConfirmationRequest < ApplicationRecord
   end
 
   def is_confirmation_link_has_expire?
-    return DateTime.now.to_i - self.confirmation_sent_at.to_i > CONFIRMATION_TTL_HOURS.to_i
+    return DateTime.now.to_i - self.confirmation_sent_at.to_i < CONFIRMATION_TTL_HOURS.to_i
   end
 
   def is_confirmation_request_has_expire?

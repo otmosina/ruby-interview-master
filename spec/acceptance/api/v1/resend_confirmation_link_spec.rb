@@ -22,9 +22,14 @@ RSpec.describe 'Users' do
         end
 
         context 'When user authenticated', :auth do 
+          
           let(:email_credential) { create(:email_credential, :pending, user: authenticated_user) }
           let(:email) { email_credential.email }
-
+          
+          before do
+            create(:confirmation_request, email: email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
+          end
+          
           example_request 'Responds with 201 request is valid' do
             expect(status).to eq(201)
           end          
@@ -44,7 +49,6 @@ RSpec.describe 'Users' do
           example 'Responds with 422 when try to send cofirmation link 2 times in a row' do
             do_request
             do_request
-            #byebug
             expect(status).to eq(422)
             expect(parsed_body['errors']).to contain_exactly(
               '' => ['Too Much Requests']

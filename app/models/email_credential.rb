@@ -5,7 +5,7 @@ class EmailCredential < ApplicationRecord
 
   has_secure_password
   belongs_to :user
-  
+
   aasm column: :state do
     state :pending,  initial: true
     state :active
