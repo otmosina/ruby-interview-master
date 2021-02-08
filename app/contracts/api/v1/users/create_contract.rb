@@ -6,7 +6,6 @@ module Api::V1
       params do
         required(:email).filled(:string)
         required(:password).filled(:string)
-        required(:emailer).value(Types::Emailer)
       end
     end
   end

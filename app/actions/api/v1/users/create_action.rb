@@ -5,9 +5,7 @@ module Api::V1
     class CreateAction < ::Api::V1::BaseAction
       def call(input)
         params = yield deserialize(input)
-        params[:emailer] = @emailer.new
         params = yield validate(params)
-        params[:emailer] = params[:emailer].class
         create(params)
       end
 
@@ -16,8 +14,7 @@ module Api::V1
       def create(input)
         Try(active_record_common_errors+net_smtp_common_errors) do
           user = ::Users::CreateService.new.call(input)
-          input.merge!({user_id: user.id})
-          ::Users::SendConfirmationLinkService.new.call(input)
+          ::Users::SendConfirmationLinkService.new(UserMailer).call(input.merge({user_id: user.id}))
           user
         end.to_result
       end

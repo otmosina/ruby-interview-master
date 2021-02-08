@@ -5,7 +5,6 @@ module Api::V1
       class ResendConfirmationLinkContract < ApplicationContract
         params do
           required(:email).filled(:string)
-          required(:emailer).value(Types::Emailer)
         end
 
         rule(:email) do

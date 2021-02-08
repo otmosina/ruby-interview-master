@@ -5,7 +5,7 @@ module Api::V1
     skip_before_action :authorize_access_request!, only: [:create, :resend_confirmation_link, :confirm_email]
 
     def create
-      result = resolve_action.new(context: {emailer: UserMailer}).call(params.to_unsafe_h)
+      result = resolve_action.new().call(params.to_unsafe_h)
 
       if result.success?
         responds_with_resource(result.value!, status: 201)
@@ -25,8 +25,7 @@ module Api::V1
     end
 
     def resend_confirmation_link
-      #TODO(otmosina): implement incomig attribute email...
-      result = resolve_action.new(context: {emailer: UserMailer}).call(params.to_unsafe_h)
+      result = resolve_action.new().call(params.to_unsafe_h)
 
       if result.success?
         responds_with_resource(result.value!, status: 201)
