@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 RSpec.describe 'Users' do
   resource 'Current user endpoint' do
     route '/api/v1/user{?include}', 'Current user endpoint' do
@@ -34,6 +33,13 @@ RSpec.describe 'Users' do
               expect(parsed_included).to contain_exactly(
                 have_type('emailCredentials')
               )
+            end
+
+            example 'Responds with 401 after expire refresh token' do
+              do_request
+              Timecop.travel(Time.now + (ENV.fetch('REFRESH_EXP_DAYS').to_i + 1).days)
+              do_request
+              expect(status).to eq(401)
             end
           end
         end

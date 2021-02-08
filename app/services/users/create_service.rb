@@ -5,8 +5,8 @@ module Users
     def call(params)
       user_params = build_user_params
       user_params.merge!(build_email_credential_params(params))
-
-      User.create(user_params)
+      user = User.create(user_params)
+      user
     end
 
     private

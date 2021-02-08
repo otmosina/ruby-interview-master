@@ -8,7 +8,7 @@ module Api::V1
     ]
 
     def initialize(context: {}, **args)
-      @current_user = context.fetch(:current_user)
+      @current_user = context.fetch(:current_user) if context[:current_user].present?
 
       super(args)
     end
@@ -18,7 +18,11 @@ module Api::V1
     attr_reader :current_user
 
     def active_record_common_errors
-      [ActiveRecord::InvalidForeignKey, ActiveRecord::RecordNotUnique]
+      [ActiveRecord::InvalidForeignKey, ActiveRecord::RecordNotUnique, ActiveRecord::RecordNotFound]
+    end
+
+    def net_smtp_common_errors
+      [Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError, Net::SMTPUnknownError]
     end
 
     def deserialize(input)

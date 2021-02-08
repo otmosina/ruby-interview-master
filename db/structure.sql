@@ -50,6 +50,38 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: confirmation_requests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.confirmation_requests (
+    id bigint NOT NULL,
+    email public.citext NOT NULL,
+    confirmation_sent_at timestamp with time zone,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: confirmation_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.confirmation_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: confirmation_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.confirmation_requests_id_seq OWNED BY public.confirmation_requests.id;
+
+
+--
 -- Name: email_credentials; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -102,7 +134,8 @@ CREATE TABLE public.users (
     id bigint NOT NULL,
     deleted_at timestamp with time zone,
     created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    updated_at timestamp with time zone NOT NULL,
+    token character varying
 );
 
 
@@ -126,6 +159,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: confirmation_requests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.confirmation_requests ALTER COLUMN id SET DEFAULT nextval('public.confirmation_requests_id_seq'::regclass);
+
+
+--
 -- Name: email_credentials id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -145,6 +185,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: confirmation_requests confirmation_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.confirmation_requests
+    ADD CONSTRAINT confirmation_requests_pkey PRIMARY KEY (id);
 
 
 --
@@ -186,6 +234,13 @@ CREATE INDEX index_email_credentials_on_user_id ON public.email_credentials USIN
 
 
 --
+-- Name: index_users_on_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_token ON public.users USING btree (token);
+
+
+--
 -- Name: email_credentials fk_rails_b700f9425a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -202,6 +257,10 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190426065925'),
 ('20190426065935'),
-('20190502072717');
+('20190502072717'),
+('20210127094744'),
+('20210128123731'),
+('20210205134540'),
+('20210205155454');
 
 

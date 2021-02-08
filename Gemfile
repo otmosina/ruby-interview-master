@@ -40,6 +40,8 @@ gem 'activerecord-native_db_types_override', '~> 0.3.0'
 # Simple, efficient background processing for Ruby.
 gem 'sidekiq', '~> 5.2', '>= 5.2.7'
 
+gem 'aasm', '~> 5.1.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug', '~> 3.7'

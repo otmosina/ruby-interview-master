@@ -18,7 +18,7 @@ module Api::V1
       head 401
     end
 
-    def current_user
+    def current_user      
       return @current_user if defined?(@current_user)
       return nil if found_token.nil?
 
@@ -53,10 +53,12 @@ module Api::V1
       case result
       in Dry::Monads::Result::Failure(Dry::Validation::Result => validation)
         responds_with_errors(validation, status: 422)
-      in Dry::Monads::Result::Failure(Hash => errors)
+      in Dry::Monads::Result::Failure(Hash => errors)        
         responds_with_errors(errors, status: 422)
       in Dry::Monads::Result::Failure(ActiveRecord::RecordNotUnique => error)
-        head 409
+        head 409      
+      in Dry::Monads::Result::Failure(Net::SMTPServerBusy => error)
+        responds_with_errors({errors: ["Email does not sent"]}, status: 455)             
       end
     end
   end
