@@ -14,7 +14,6 @@ JSONAPI::Rails.configure do |config|
     h[k] = [*names, "Serializable#{klass}"].join('::').safe_constantize
   end
 
-  #они еще и определяют как обрабатывать и выводить стандартные ошибки
   config.jsonapi_errors_class.tap do |h|
     h[:'ActiveRecord::RecordNotFound'] = JSONAPI::Rails::StandardErrorsSerializer
     h[:'ActiveRecord::RecordNotUnique'] = JSONAPI::Rails::StandardErrorsSerializer

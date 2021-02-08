@@ -8,8 +8,10 @@ class User < ApplicationRecord
 
   scope :active, -> { where(deleted_at: nil) }
 
-  #CONFIRMATION_URL = "https://example.com"
-  #def compose_comfirmation_link
-  #  return [CONFIRMATION_URL, "token=#{self.token }"].join("?")
-  #end  
+  CONFIRMATION_URL = "https://example.com"
+  
+  def confirmation_link
+    return [CONFIRMATION_URL, "token=#{self.token }"].join("?")
+  end
+
 end
