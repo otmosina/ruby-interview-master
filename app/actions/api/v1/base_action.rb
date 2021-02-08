@@ -9,7 +9,6 @@ module Api::V1
 
     def initialize(context: {}, **args)
       @current_user = context.fetch(:current_user) if context[:current_user].present?
-      @emailer = context.fetch(:emailer) if context[:emailer].present?
 
       super(args)
     end
