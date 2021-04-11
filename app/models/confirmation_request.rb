@@ -7,6 +7,18 @@ class ConfirmationRequest < ApplicationRecord
   CONFIRMATION_TTL_HOURS = 48.hours
   CONFIRMATION_REQUEST_TTL_MINUTES = 5
   
+
+  include AASM
+  aasm column: :state do
+    state :pending,  initial: true
+    state :active
+    
+    event :confirm_credential do
+      transitions from: :pending,  to: :active
+    end
+  end
+  
+
   def confirmation_link
     return [CONFIRMATION_URL, "token=#{ self.token }"].join("?")
   end

@@ -24,6 +24,16 @@ COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings
 
 
 --
+-- Name: confirmation_requests_states; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.confirmation_requests_states AS ENUM (
+    'pending',
+    'active'
+);
+
+
+--
 -- Name: email_credentials_states; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -59,7 +69,8 @@ CREATE TABLE public.confirmation_requests (
     confirmation_sent_at timestamp with time zone,
     created_at timestamp with time zone NOT NULL,
     updated_at timestamp with time zone NOT NULL,
-    token character varying
+    token character varying,
+    state public.confirmation_requests_states DEFAULT 'pending'::public.confirmation_requests_states NOT NULL
 );
 
 
@@ -88,7 +99,6 @@ ALTER SEQUENCE public.confirmation_requests_id_seq OWNED BY public.confirmation_
 
 CREATE TABLE public.email_credentials (
     id bigint NOT NULL,
-    state public.email_credentials_states DEFAULT 'pending'::public.email_credentials_states NOT NULL,
     email public.citext NOT NULL,
     password_digest text NOT NULL,
     confirmed_at timestamp with time zone,
@@ -263,6 +273,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210205134540'),
 ('20210205155454'),
 ('20210411055316'),
-('20210411071240');
+('20210411071240'),
+('20210411072623'),
+('20210411075225');
 
 
