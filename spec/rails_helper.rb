@@ -14,6 +14,8 @@ require 'json_matchers/rspec'
 require 'webmock/rspec'
 require 'vcr'
 require 'dry/container/stub'
+require 'sidekiq/testing'
+
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -38,7 +40,6 @@ RSpec::Matchers.define_negated_matcher :not_enqueued_email, :have_enqueued_email
 
 DatabaseCleaner.allow_remote_database_url = true
 JsonMatchers.schema_root = 'spec/support/schemas/api'
-ActiveJob::Base.queue_adapter = :test
 
 App::Container.enable_stubs!
 

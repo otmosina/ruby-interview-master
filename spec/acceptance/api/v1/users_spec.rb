@@ -35,6 +35,13 @@ RSpec.describe 'Users' do
           expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
 
+        #TODO: test how to deliver to sidekiq queue
+        #example 'Send email to sidekiq' do 
+        #  expect do 
+        #    do_request
+        #  end.to change( Sidekiq::Worker.jobs, :size ).by(1)
+        #end
+
         context 'when errors in sending mail' do
           example 'Sent mails count & sent_at have not changed' do
             allow_any_instance_of(ActionMailer::MessageDelivery).to receive(:deliver_now).and_raise(Net::SMTPServerBusy)
