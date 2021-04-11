@@ -17,11 +17,9 @@ RSpec.describe 'Users' do
 
         context 'when confirmatio token is correct', :auth do 
           let(:authenticated_user) { create(:user) }
-          let(:token) { authenticated_user.token }
-          before do
-            create(:email_credential, :pending, user: authenticated_user)
-            create(:confirmation_request, email: authenticated_user.email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
-          end
+          let(:email_credential) { create(:email_credential, :pending, user: authenticated_user) }
+          let(:confirmation_request) { create(:confirmation_request, email: email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes) }
+          let(:token) { confirmation_request.token }
 
           example_request 'Responds with 200' do
             expect(status).to eq(201)
@@ -61,10 +59,10 @@ RSpec.describe 'Users' do
         
         context 'when confirmation link has expire is incorrect', :auth do 
           let(:authenticated_user) { create(:user) }
-          let(:token) { authenticated_user.token }
+          let(:email_credential) { create(:email_credential, :pending, user: authenticated_user) }
+          let(:token) { ConfirmationRequest.find_by_email(email_credential.email).token }
           before do
-            create(:email_credential, :pending, user: authenticated_user)
-            create(:confirmation_request, email: authenticated_user.email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
+            create(:confirmation_request, email: email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes) 
           end
 
           example 'Responds with 4**' do

@@ -8,10 +8,10 @@ module Api::V1
         end
 
         rule(:token) do
-          base.failure('Tokens not matched') unless User.find_by_token(values[:token])       
+          base.failure('Tokens not matched') unless ConfirmationRequest.find_by_token(values[:token])       
         end
         rule(:token) do
-         if ConfirmationRequest.find_by_email( User.find_by_token(values[:token])&.email_credential&.email).present? && !ConfirmationRequest.find_by_email(User.find_by_token(values[:token])&.email_credential&.email )&.is_confirmation_link_has_expire? 
+         if ConfirmationRequest.find_by_token(values[:token]).present? && !ConfirmationRequest.find_by_token(values[:token])&.is_confirmation_link_has_expire? 
             base.failure('Confirmation link already expire')
           end    
         end        

@@ -58,7 +58,8 @@ CREATE TABLE public.confirmation_requests (
     email public.citext NOT NULL,
     confirmation_sent_at timestamp with time zone,
     created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    updated_at timestamp with time zone NOT NULL,
+    token character varying
 );
 
 
@@ -134,8 +135,7 @@ CREATE TABLE public.users (
     id bigint NOT NULL,
     deleted_at timestamp with time zone,
     created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL,
-    token character varying
+    updated_at timestamp with time zone NOT NULL
 );
 
 
@@ -227,17 +227,17 @@ CREATE UNIQUE INDEX email_credentials_email_index ON public.email_credentials US
 
 
 --
+-- Name: index_confirmation_requests_on_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_confirmation_requests_on_token ON public.confirmation_requests USING btree (token);
+
+
+--
 -- Name: index_email_credentials_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_email_credentials_on_user_id ON public.email_credentials USING btree (user_id);
-
-
---
--- Name: index_users_on_token; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_users_on_token ON public.users USING btree (token);
 
 
 --
@@ -261,6 +261,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210127094744'),
 ('20210128123731'),
 ('20210205134540'),
-('20210205155454');
+('20210205155454'),
+('20210411055316'),
+('20210411071240');
 
 

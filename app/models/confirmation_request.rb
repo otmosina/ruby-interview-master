@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
 class ConfirmationRequest < ApplicationRecord
+  include Tokenable
+  CONFIRMATION_URL = "https://example.com"
+  
   CONFIRMATION_TTL_HOURS = 48.hours
   CONFIRMATION_REQUEST_TTL_MINUTES = 5
+  
+  def confirmation_link
+    return [CONFIRMATION_URL, "token=#{ self.token }"].join("?")
+  end
 
   def mark_sent_confirmation!
     self.confirmation_sent_at = DateTime.now
