@@ -14,11 +14,12 @@ RSpec.describe 'Users' do
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
         let(:token) { SecureRandom.hex }
+        let(:past_confirmation_at) { Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes }
 
         context 'when confirmatio token is correct', :auth do
           let(:authenticated_user) { create(:user) }
           let(:email_credential) { create(:email_credential, user: authenticated_user) }
-          let(:confirmation_request) { create(:confirmation_request, email: email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes) }
+          let(:confirmation_request) { create(:confirmation_request, email: email_credential.email, confirmation_sent_at: past_confirmation_at) }
           let(:token) { confirmation_request.token }
 
           example_request 'Responds with 200' do
@@ -33,7 +34,7 @@ RSpec.describe 'Users' do
         context 'when confirmation token is incorrect', :auth do
           let(:authenticated_user) { create(:user) }
           let(:email_credential) { create(:email_credential, user: authenticated_user) }
-          let(:confirmation_request) { create(:confirmation_request, email: email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes) }
+          let(:confirmation_request) { create(:confirmation_request, email: email_credential.email, confirmation_sent_at: past_confirmation_at) }
 
           example_request 'Responds with 4**' do
             expect(status).to eq(422)
@@ -53,7 +54,7 @@ RSpec.describe 'Users' do
           let(:token) { ConfirmationRequest.find_by_email(email_credential.email).token }
 
           before do
-            create(:confirmation_request, email: email_credential.email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
+            create(:confirmation_request, email: email_credential.email, confirmation_sent_at: past_confirmation_at)
           end
 
           example 'Responds with 4**' do

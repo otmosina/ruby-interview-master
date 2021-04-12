@@ -15,13 +15,13 @@ RSpec.describe 'Users' do
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
 
-        context 'When no email credential -> no connfirmation requests before' do
+        context 'when no email credential -> no connfirmation requests before' do
           example_request 'Respond with 422' do
             expect(status).to eq(422)
           end
         end
 
-        context 'When user authenticated', :auth do
+        context 'when user authenticated', :auth do
           let(:email_credential) { create(:email_credential, user: authenticated_user) }
           let(:email) { email_credential.email }
 

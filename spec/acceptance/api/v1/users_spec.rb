@@ -35,19 +35,17 @@ RSpec.describe 'Users' do
           expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
 
-        # TODO: test how to deliver to sidekiq queue
-        # example 'Send email to sidekiq' do
-        #  expect do
-        #    do_request
-        #  end.to change( Sidekiq::Worker.jobs, :size ).by(1)
-        # end
-
         context 'when errors in sending mail' do
+          let(:my_instance) { instance_double(ActionMailer::MessageDelivery) }
+
+          before do
+            allow(ActionMailer::MessageDelivery).to receive(:new).and_return(my_instance)
+            allow(my_instance).to receive(:deliver_later).and_raise(Net::SMTPServerBusy)
+          end
+
           example 'Sent mails count & sent_at have not changed' do
-            allow_any_instance_of(ActionMailer::MessageDelivery).to receive(:deliver_now).and_raise(Net::SMTPServerBusy)
             do_request
             expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(0)
-            # expect(User.last.email_credential.reload.confirmation_sent_at).to be_nil
             expect(ConfirmationRequest.all.size).to eq(0)
           end
         end
@@ -67,8 +65,11 @@ RSpec.describe 'Users' do
         end
 
         context 'when email credential already exists' do
-          let(:user2) { create(:user) }
-          let!(:email_credential) { create(:email_credential, email: email, user: user2) }
+          let(:user) { create(:user) }
+
+          before do
+            create(:email_credential, email: email, user: user)
+          end
 
           example 'Responds with 409 when email credential already exists' do
             do_request

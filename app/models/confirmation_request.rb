@@ -26,11 +26,11 @@ class ConfirmationRequest < ApplicationRecord
     save
   end
 
-  def is_confirmation_link_has_expire?
+  def confirmation_link_has_expire?
     DateTime.now.to_i - confirmation_sent_at.to_i < CONFIRMATION_TTL_HOURS.to_i
   end
 
-  def is_confirmation_request_has_expire?
+  def confirmation_request_has_expire?
     return false if confirmation_sent_at.nil?
 
     DateTime.now.to_i - confirmation_sent_at.to_i < CONFIRMATION_REQUEST_TTL_MINUTES.minutes.to_i

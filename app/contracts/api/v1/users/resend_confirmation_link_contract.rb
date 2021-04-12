@@ -9,10 +9,8 @@ module Api::V1
 
       rule(:email) do
         base.failure('Did not send any confirmation before') unless ConfirmationRequest.last_by_email(value).present?
-        if ConfirmationRequest.last_by_email(value)&.is_confirmation_request_has_expire?
-          base.failure('Too Much Requests')
-        end
+        base.failure('Too Much Requests') if ConfirmationRequest.last_by_email(value)&.confirmation_request_has_expire?
       end
     end
   end
-  end
+end
