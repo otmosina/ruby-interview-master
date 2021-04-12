@@ -11,7 +11,7 @@ RSpec.describe 'Users' do
           parameter :email, required: true
         end
 
-        let(:email) { "testemail@example.com" } #{ FFaker::Internet.email }
+        let(:email) { "testemail@example.com" } # { FFaker::Internet.email }
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
 
@@ -21,21 +21,20 @@ RSpec.describe 'Users' do
           end
         end
 
-        context 'When user authenticated', :auth do 
-          
+        context 'When user authenticated', :auth do
           let(:email_credential) { create(:email_credential, user: authenticated_user) }
           let(:email) { email_credential.email }
-          
+
           before do
             create(:confirmation_request, email: email, confirmation_sent_at: Time.now - (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
           end
-          
+
           example_request 'Responds with 201 request is valid' do
             expect(status).to eq(201)
-          end          
+          end
 
           example_request 'Send time attribute has changed' do
-            expect(ConfirmationRequest.last.confirmation_sent_at).to_not be_nil
+            expect(ConfirmationRequest.last.confirmation_sent_at).not_to be_nil
           end
 
           example 'Mail deliveres count has change' do
@@ -43,12 +42,12 @@ RSpec.describe 'Users' do
           end
 
           example_request 'Confirmation request state has not changed' do
-            expect(ConfirmationRequest.where(email:email).last.state).to eq('pending')
-            #expect(authenticated_user.email_credential.reload.state).to eq('pending')    
+            expect(ConfirmationRequest.where(email: email).last.state).to eq('pending')
+            # expect(authenticated_user.email_credential.reload.state).to eq('pending')
           end
 
           example_request 'We are sent 2 requests already' do
-            expect(ConfirmationRequest.where(email: email).size).to eq(2)    
+            expect(ConfirmationRequest.where(email: email).size).to eq(2)
           end
 
           example 'Responds with 422 when try to send cofirmation link 2 times in a row' do
@@ -59,7 +58,7 @@ RSpec.describe 'Users' do
               '' => ['Too Much Requests']
             )
           end
-          
+
           example 'Responds with 422 when try to send cofirmation link 2 times in short time period' do
             do_request
             Timecop.travel(Time.now + (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES - 1).minutes)
@@ -72,10 +71,9 @@ RSpec.describe 'Users' do
             Timecop.travel(Time.now + (ConfirmationRequest::CONFIRMATION_REQUEST_TTL_MINUTES + 1).minutes)
             do_request
             expect(status).to eq(201)
-          end          
-        end     
+          end
+        end
       end
     end
   end
 end
-  

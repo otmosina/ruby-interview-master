@@ -6,8 +6,7 @@ module Users
       token = params.fetch(:token)
       request = ConfirmationRequest.find_by_token(token)
       request.confirm_credential!
-      return
+      nil
     end
   end
 end
-  

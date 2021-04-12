@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddStateToConfirmationRequest < ActiveRecord::Migration[5.2]
   def up
     execute(<<-SQL.squish)
@@ -6,7 +8,7 @@ class AddStateToConfirmationRequest < ActiveRecord::Migration[5.2]
         'active'
       );
     SQL
-    add_column :confirmation_requests, :state, :confirmation_requests_states, null: false, default: 'pending' 
+    add_column :confirmation_requests, :state, :confirmation_requests_states, null: false, default: 'pending'
   end
 
   def down

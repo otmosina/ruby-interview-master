@@ -17,6 +17,6 @@ FactoryBot.define do
 
     trait :deleted do
       deleted_at { FFaker::Time.datetime }
-    end    
+    end
   end
 end
