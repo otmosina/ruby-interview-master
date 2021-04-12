@@ -67,7 +67,8 @@ RSpec.describe 'Users' do
         end
 
         context 'when email credential already exists' do
-          let!(:email_credential) { create(:email_credential, email: email) }
+          let(:user2) { create(:user) }
+          let!(:email_credential) { create(:email_credential, email: email, user: user2) }
 
           example 'Responds with 409 when email credential already exists' do
             do_request

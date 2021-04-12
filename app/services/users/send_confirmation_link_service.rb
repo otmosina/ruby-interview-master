@@ -6,14 +6,11 @@ module Users
         @emailer = emailer
       end
       def call(params)
-        email = params.fetch(:email)
-        
-        user = EmailCredential.find_by_email(email).user
-        
-
+        email = params.fetch(:email) 
         request = ConfirmationRequest.new(email: email, confirmation_sent_at: DateTime.now)
         email_result = @emailer.with(to: email, confirmation_url: request.confirmation_link).confirmation_email.deliver_later
-        request.save
+        request.save!
+        
         return nil
       end
     end

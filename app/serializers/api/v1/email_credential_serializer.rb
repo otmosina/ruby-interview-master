@@ -5,7 +5,6 @@ module Api::V1
     type 'emailCredentials'
 
     attributes :email,
-               :state,
                :confirmed_at
 
     def current_user?

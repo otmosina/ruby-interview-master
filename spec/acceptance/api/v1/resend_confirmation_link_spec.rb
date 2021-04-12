@@ -23,7 +23,7 @@ RSpec.describe 'Users' do
 
         context 'When user authenticated', :auth do 
           
-          let(:email_credential) { create(:email_credential, :pending, user: authenticated_user) }
+          let(:email_credential) { create(:email_credential, user: authenticated_user) }
           let(:email) { email_credential.email }
           
           before do
@@ -42,9 +42,14 @@ RSpec.describe 'Users' do
             expect { do_request }.to change { ActionMailer::Base.deliveries.count }.by(1)
           end
 
-          example_request 'Email confirmation state has not changed' do
-            expect(authenticated_user.email_credential.reload.state).to eq('pending')    
-          end   
+          example_request 'Confirmation request state has not changed' do
+            expect(ConfirmationRequest.where(email:email).last.state).to eq('pending')
+            #expect(authenticated_user.email_credential.reload.state).to eq('pending')    
+          end
+
+          example_request 'We are sent 2 requests already' do
+            expect(ConfirmationRequest.where(email: email).size).to eq(2)    
+          end
 
           example 'Responds with 422 when try to send cofirmation link 2 times in a row' do
             do_request
