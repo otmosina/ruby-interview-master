@@ -3,7 +3,7 @@
 RSpec.describe 'Users' do
   resource 'API' do
     route '/api/v1/users/resend_confirmation_link{?include}', 'Users endpoint' do
-      get 'Resend Confirmation Link' do
+      post 'Resend Confirmation Link' do
         parameter :include, example: 'emailCredential'
         parameter :type, scope: :data, required: true
 
