@@ -3,7 +3,7 @@
 RSpec.describe 'Users' do
   resource 'API' do
     route '/api/v1/users/confirm_email{?include}', 'Users endpoint' do
-      get 'Send Confirmation Link' do
+      post 'Send Confirmation Link' do
         parameter :include, example: 'emailCredential'
         parameter :type, scope: :data, required: true
 
@@ -13,7 +13,7 @@ RSpec.describe 'Users' do
 
         let(:include) { 'emailCredential' }
         let(:type) { 'users' }
-        let(:token) { FFaker::String.rand }
+        let(:token) { SecureRandom.hex }
 
         context 'when confirmatio token is correct', :auth do
           let(:authenticated_user) { create(:user) }
